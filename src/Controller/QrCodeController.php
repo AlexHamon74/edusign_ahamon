@@ -20,6 +20,13 @@ final class QrCodeController extends AbstractController {
             return new Response('Élève non trouvé', 404);
         }
 
+        // Pour tester sur téléphone
+        //-----------------------------------------------------------
+        // $ip = '10.26.131.145';
+        // $port = 8000;
+        // $url = "http://$ip:$port/api/eleves/{$eleve->getId()}/sign";
+        // ----------------------------------------------------------
+
         $url = $this->generateUrl('api_eleve_qrcode', ['id' => $eleve->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $builder = new Builder(

@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
             uriTemplate: '/eleves/{id}/qr-code',
             controller: QrCodeController::class,
         ),
-        new Post(
+        new Get(
             uriTemplate: '/eleves/{id}/sign',
             controller: SignPresenceController::class,
             name: 'api_eleve_sign',
