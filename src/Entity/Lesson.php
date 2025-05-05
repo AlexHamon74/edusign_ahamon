@@ -109,4 +109,9 @@ class Lesson
             return $userLesson->getUser()?->getEmail(); 
         }, $this->userLessons->toArray()));
     }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 }

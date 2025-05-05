@@ -228,4 +228,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             return $userLesson->getLesson()?->getName(); 
         }, $this->userLessons->toArray()));
     }
+
+    public function __toString(): string
+    {
+        return $this->firstname . ' ' . $this->name;
+    }
 }
