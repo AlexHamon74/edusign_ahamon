@@ -67,9 +67,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
 
-    #[ORM\Column(options: ["default" => 0])]
-    private ?bool $isPresent = false;
-
     /**
      * @var Collection<int, UserLesson>
      */
@@ -176,18 +173,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstname(string $firstname): static
     {
         $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function isPresent(): ?bool
-    {
-        return $this->isPresent;
-    }
-
-    public function setIsPresent(bool $isPresent): static
-    {
-        $this->isPresent = $isPresent;
 
         return $this;
     }
