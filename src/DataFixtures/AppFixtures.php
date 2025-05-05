@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Lesson;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -14,6 +15,7 @@ class AppFixtures extends Fixture
         ['marie@poppins.com', 'marie123', 'Poppins', 'Marie'],
         ['connor@bedard.com', 'connor123', 'Bedard', 'Connor']
     ];
+    const LESSONS_NAME = ['Cours de Math', 'Cours de Français', 'Cours de Technologie'];
 
     public function load(ObjectManager $manager): void
     {
@@ -26,6 +28,13 @@ class AppFixtures extends Fixture
 
             $manager->persist($user);
         };
+
+        foreach (self::LESSONS_NAME as $lessonName) {
+            $lesson = new Lesson();
+            $lesson->setName($lessonName);
+            
+            $manager->persist($lesson);
+        }
 
         $manager->flush();
     }

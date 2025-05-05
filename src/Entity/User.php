@@ -8,6 +8,8 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -67,6 +69,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(options: ["default" => 0])]
     private ?bool $isPresent = false;
+
+    /**
+     * @var Collection<int, UserLesson>
+     */
+    #[ORM\OneToMany(targetEntity: UserLesson::class, mappedBy: 'user')]
+    private Collection $userLessons;
+
+    public function __construct()
+    {
+        $this->userLessons = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -177,5 +190,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isPresent = $isPresent;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, UserLesson>
+     */
+    public function getUserLessons(): Collection
+    {
+        return $this->userLessons;
+    }
+
+    public function addUserLesson(UserLesson $userLesson): static
+    {
+        if (!$this->userLessons->contains($userLesson)) {
+            $this->userLessons->add($userLesson);
+            $userLesson->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserLesson(UserLesson $userLesson): static
+    {
+        if ($this->userLessons->removeElement($userLesson)) {
+            // set the owning side to null (unless already changed)
+            if ($userLesson->getUser() === $this) {
+                $userLesson->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLessonUsersAsString(): string
+    {
+        return implode('<br> ', array_map(function(UserLesson $userLesson) {
+            return $userLesson->getLesson()?->getName(); 
+        }, $this->userLessons->toArray()));
     }
 }

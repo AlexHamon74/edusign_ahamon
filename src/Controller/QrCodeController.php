@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Lesson;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,9 +11,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class QrCodeController extends AbstractController {
 
-    public function __invoke(): Response
+    public function __invoke(Lesson $lesson): Response
     {
-        $url = $this->generateUrl('api_eleve_qrcode', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->generateUrl('api_sign_presence', ['id' => $lesson->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $builder = new Builder(
             writer: new PngWriter(),
