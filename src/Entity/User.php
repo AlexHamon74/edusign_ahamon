@@ -65,8 +65,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
 
-    #[ORM\Column(options: ["default" => 0], nullable: true)]
-    private ?bool $isPresent = null;
+    #[ORM\Column(options: ["default" => 0])]
+    private ?bool $isPresent = false;
 
     public function getId(): ?int
     {
@@ -172,7 +172,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->isPresent;
     }
 
-    public function setIsPresent(?bool $isPresent): static
+    public function setIsPresent(bool $isPresent): static
     {
         $this->isPresent = $isPresent;
 
