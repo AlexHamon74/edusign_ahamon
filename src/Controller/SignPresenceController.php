@@ -2,29 +2,26 @@
 
 namespace App\Controller;
 
-use App\Entity\Eleve;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\SecurityBundle\Security;
 
 final class SignPresenceController extends AbstractController {
 
-    public function __invoke(int $id, EntityManagerInterface $em): JsonResponse
+    public function __invoke(EntityManagerInterface $em, Security $security): JsonResponse
     {
-        $eleve = $em->getRepository(Eleve::class)->find($id);
+        /** @var \App\Entity\User|null $user */
+        $user = $security->getUser();
 
-        if (!$eleve) {
-            return new JsonResponse(['message' => 'Élève non trouvé'], 404);
+        if (!$user) {
+            return new JsonResponse(['message' => 'Unauthorized'], 401);
         }
 
-        $eleve->setStatut('présent');
+        $user->setIsPresent(true);
+        $em->persist($user);
         $em->flush();
 
-        return new JsonResponse([
-            'message' => 'Présence enregistrée',
-            'eleve' => $eleve->getNom(),
-            'statut' => $eleve->getStatut()
-        ]);
+        return new JsonResponse(['message' => 'Présence validée']);
     }
-
 }
