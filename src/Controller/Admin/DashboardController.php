@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Eleve;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -16,7 +16,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        return $this->redirect($adminUrlGenerator->setController(EleveCrudController::class)->generateUrl());
+        return $this->redirect($adminUrlGenerator->setController(UserCrudController::class)->generateUrl());
     }
 
     public function configureDashboard(): Dashboard
@@ -27,6 +27,6 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('Élèves', 'fas fa-users', Eleve::class);
+        yield MenuItem::linkToCrud('Élèves', 'fas fa-users', User::class);
     }
 }
