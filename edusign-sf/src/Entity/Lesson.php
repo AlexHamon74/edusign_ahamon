@@ -103,13 +103,6 @@ class Lesson
         return $this;
     }
 
-    public function getUserLessonsAsString(): string
-    {
-        return implode('<br> ', array_map(function(UserLesson $userLesson) {
-            return $userLesson->getUser()?->getEmail(); 
-        }, $this->userLessons->toArray()));
-    }
-
     public function __toString(): string
     {
         return $this->name;

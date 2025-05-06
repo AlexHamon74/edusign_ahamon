@@ -21,6 +21,9 @@ class UserLesson
     #[ORM\ManyToOne(inversedBy: 'userLessons')]
     private ?Lesson $lesson = null;
 
+    #[ORM\Column(options: ["default" => 0])]
+    private ?bool $isPresent = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,18 @@ class UserLesson
     public function setLesson(?Lesson $lesson): static
     {
         $this->lesson = $lesson;
+
+        return $this;
+    }
+
+    public function isPresent(): ?bool
+    {
+        return $this->isPresent;
+    }
+
+    public function setIsPresent(bool $isPresent): static
+    {
+        $this->isPresent = $isPresent;
 
         return $this;
     }

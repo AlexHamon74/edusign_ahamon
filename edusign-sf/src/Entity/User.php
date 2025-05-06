@@ -181,13 +181,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLessonUsersAsString(): string
-    {
-        return implode('<br> ', array_map(function(UserLesson $userLesson) {
-            return $userLesson->getLesson()?->getName(); 
-        }, $this->userLessons->toArray()));
-    }
-
     public function __toString(): string
     {
         return $this->firstname . ' ' . $this->name;

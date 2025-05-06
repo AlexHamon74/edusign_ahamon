@@ -18,7 +18,6 @@ class LessonCrudController extends AbstractCrudController
     {
         return [
             TextField::new('name')->setLabel('Nom du cours'),
-            Field::new('userLessonsAsString', 'Utilisateurs inscrits')->onlyOnIndex(),
         ];
     }
 }

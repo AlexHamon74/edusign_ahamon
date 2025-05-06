@@ -23,19 +23,22 @@ final class SignPresenceController extends AbstractController {
             return new JsonResponse(['message' => 'Leçon introuvable'], 404);
         }
     
-        $userLessonRepo = $em->getRepository(UserLesson::class);
-        $existing = $userLessonRepo->findOneBy(['user' => $user, 'lesson' => $lesson]);
-        if ($existing) {
-            return new JsonResponse(['message' => 'Déjà enregistré']);
+        $userLesson = $em->getRepository(UserLesson::class)->findOneBy([
+            'user' => $user,
+            'lesson' => $lesson,
+        ]);
+
+        if (!$userLesson) {
+            return new JsonResponse(['message' => 'Utilisateur non inscrit à ce cours'], 403);
+        }
+
+        if ($userLesson->isPresent()) {
+            return new JsonResponse(['message' => 'Présence déjà enregistrée']);
         }
     
-        $userLesson = new UserLesson();
-        $userLesson->setUser($user);
-        $userLesson->setLesson($lesson);
-    
-        $em->persist($userLesson);
+        $userLesson->setIsPresent(true);
         $em->flush();
     
-        return new JsonResponse(['message' => 'Présence enregistrée']);
+        return new JsonResponse(['message' => 'Présence validée']);
     }
 }

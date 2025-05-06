@@ -20,7 +20,6 @@ class UserCrudController extends AbstractCrudController
             TextField::new('email')->setLabel('Email'),
             TextField::new('name')->setLabel('Nom'),
             TextField::new('firstname')->setLabel('Prénom'),
-            Field::new('lessonUsersAsString', 'Cours inscrits')->onlyOnIndex(),
         ];
     }
 }
