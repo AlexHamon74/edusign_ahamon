@@ -12,13 +12,14 @@ export default function QrScanner({ onScanned, onClose }: Props) {
     const scannedRef = useRef(false);
     const [_, setDummyState] = useState(false);
 
-    //
+    // Demande de permission caméra 
     useEffect(() => {
         if (!permission || permission.status !== PermissionStatus.GRANTED) {
             requestPermission();
         }
     }, [permission]);
 
+    // Réinitialise le scanner si la permission change
     const handleBarCodeScanned = ({ data }: { data: string }) => {
         if (!scannedRef.current) {
             scannedRef.current = true;

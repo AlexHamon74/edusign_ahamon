@@ -38,6 +38,7 @@ export default function HomeScreen() {
             const user = await getUsernameFromToken();
             setUsername(user);
 
+            // Récupération des cours
             try {
                 const response = await api.get('/lessons');
                 setLessons(response.data.member);
@@ -66,15 +67,12 @@ export default function HomeScreen() {
             const match = data.match(/\/lessons\/(\d+)\/sign/);
             const lessonId = match ? match[1] : null;
 
-            if (!lessonId) {
-                throw new Error('QR code invalide.');
-            }
-
+            // Enregistrement de la présence
             await api.post(`/presence/lessons/${lessonId}/sign`, {
                 qrData: data,
             });
 
-            Alert.alert('Succès', 'Présence enregistrée !');
+            Alert.alert('Succès', 'Présence validée !');
         } catch (error) {
             console.error('Erreur lors du scan :', error);
             Alert.alert('Erreur', "Échec de l'enregistrement de la présence.");
@@ -213,7 +211,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     footer: {
-        marginTop: 'auto', // Ce style permet de pousser le bouton en bas
+        marginTop: 'auto',
         marginBottom: 16,
     },
 });

@@ -6,6 +6,7 @@ import { login } from '../lib/auth';
 export default function LoginScreen() {
   const router = useRouter();
 
+  // Fonction de gestion de la soumission du formulaire de connexion
   const handleLogin = async (username: string, password: string) => {
     try {
       await login(username, password);

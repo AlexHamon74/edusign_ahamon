@@ -13,6 +13,7 @@ export default function LessonDetail() {
     const [lesson, setLesson] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
+    // Récupération des détails du cours
     useEffect(() => {
         if (!id) return;
         const fetchLesson = async () => {
