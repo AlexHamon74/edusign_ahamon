@@ -18,6 +18,7 @@ class LessonCrudController extends AbstractCrudController
     {
         return [
             TextField::new('name')->setLabel('Nom du cours'),
+            Field::new('qrCode', 'QR Code')->setTemplatePath('qr_code.html.twig')->onlyOnIndex(),
         ];
     }
 }

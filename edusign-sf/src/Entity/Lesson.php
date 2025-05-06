@@ -108,4 +108,9 @@ class Lesson
     {
         return $this->name;
     }
+
+    public function getQrCodeUrl(): string
+    {
+        return '/presence/lessons/' . $this->getId() . '/qrcode';
+    }
 }
