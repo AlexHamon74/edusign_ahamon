@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource(
     operations: [
         new GetCollection(),
+        new Get(),
         new Post(),
         new Patch(),
         new Delete(),
