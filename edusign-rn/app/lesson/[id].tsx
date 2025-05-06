@@ -1,13 +1,21 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Alert,
+    Button,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
+import QrScanner from '../../components/QrScanner';
 import api from '../../lib/api';
 
 export default function LessonDetail() {
-  const { id } = useLocalSearchParams();
-  const router = useRouter();
+  const { id } = useLocalSearchParams<{ id: string }>();
   const [lesson, setLesson] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [showScanner, setShowScanner] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -23,6 +31,19 @@ export default function LessonDetail() {
     };
     fetchLesson();
   }, [id]);
+
+  const handleQrScanned = async (data: string) => {
+    try {
+      setShowScanner(false);
+      await api.post(`/presence/lessons/${id}/sign`, {
+        qrData: data,
+      });
+      Alert.alert('Succès', 'Présence enregistrée !');
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Erreur', 'Échec de l'enregistrement de la présence.");
+    }
+  };
 
   if (loading) {
     return (
@@ -42,10 +63,17 @@ export default function LessonDetail() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{lesson.name}</Text>
-      <Text style={styles.subtitle}>
-        Nombre d'inscrits : {lesson.userLessons.length}
-      </Text>
+      {showScanner ? (
+        <QrScanner onScanned={handleQrScanned} onClose={() => setShowScanner(false)} />
+      ) : (
+        <>
+          <Text style={styles.title}>{lesson.name}</Text>
+          <Text style={styles.subtitle}>
+            Nombre d'inscrits : {lesson.userLessons.length}
+          </Text>
+          <Button title="📷 Scanner un QR Code" onPress={() => setShowScanner(true)} />
+        </>
+      )}
     </View>
   );
 }
